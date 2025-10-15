@@ -1,0 +1,335 @@
+{
+	"info": {
+		"_postman_id": "techmarket-api-tests",
+		"name": "TechMarket API Tests",
+		"description": "Collection de testes para a API TechMarket - Sistema de Transferências Bancárias",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/actuator/health",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"actuator",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transferência Válida",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"origem\": 1,\n    \"destino\": 2,\n    \"valor\": 100.00\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/transferencias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"transferencias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transferência com Idempotência",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"origem\": 1,\n    \"destino\": 2,\n    \"valor\": 50.00,\n    \"idempotencyKey\": \"test-key-123\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/transferencias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"transferencias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transferência Duplicada (Idempotência)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"origem\": 1,\n    \"destino\": 2,\n    \"valor\": 50.00,\n    \"idempotencyKey\": \"test-key-123\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/transferencias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"transferencias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transferência - Saldo Insuficiente",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"origem\": 1,\n    \"destino\": 2,\n    \"valor\": 10000.00\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/transferencias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"transferencias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transferência - Conta Não Encontrada",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"origem\": 999,\n    \"destino\": 2,\n    \"valor\": 100.00\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/transferencias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"transferencias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transferência - Valor Negativo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"origem\": 1,\n    \"destino\": 2,\n    \"valor\": -100.00\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/transferencias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"transferencias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transferência - Mesma Conta",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"origem\": 1,\n    \"destino\": 1,\n    \"valor\": 100.00\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/transferencias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"transferencias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transferência - Dados Inválidos",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"origem\": null,\n    \"destino\": 2,\n    \"valor\": \"abc\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/transferencias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"transferencias"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Log da requisição",
+					"console.log('Executando: ' + pm.info.requestName);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Testes básicos para todas as requisições",
+					"pm.test('Status code is not 500', function () {",
+					"    pm.expect(pm.response.code).to.not.equal(500);",
+					"});",
+					"",
+					"pm.test('Response time is less than 5000ms', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+					"});",
+					"",
+					"// Testes específicos por requisição",
+					"if (pm.info.requestName === 'Health Check') {",
+					"    pm.test('Health check returns 200', function () {",
+					"        pm.response.to.have.status(200);",
+					"    });",
+					"}",
+					"",
+					"if (pm.info.requestName === 'Transferência Válida') {",
+					"    pm.test('Transfer successful', function () {",
+					"        pm.response.to.have.status(200);",
+					"    });",
+					"    ",
+					"    pm.test('Response has codigo', function () {",
+					"        const jsonData = pm.response.json();",
+					"        pm.expect(jsonData.codigo).to.exist;",
+					"    });",
+					"    ",
+					"    pm.test('Response has status success', function () {",
+					"        const jsonData = pm.response.json();",
+					"        pm.expect(jsonData.status).to.eql('success');",
+					"    });",
+					"}",
+					"",
+					"if (pm.info.requestName === 'Transferência - Saldo Insuficiente') {",
+					"    pm.test('Returns insufficient balance error', function () {",
+					"        pm.response.to.have.status(400);",
+					"    });",
+					"    ",
+					"    pm.test('Error message is correct', function () {",
+					"        const jsonData = pm.response.json();",
+					"        pm.expect(jsonData.error).to.eql('Insufficient balance');",
+					"    });",
+					"}",
+					"",
+					"if (pm.info.requestName === 'Transferência - Conta Não Encontrada') {",
+					"    pm.test('Returns account not found error', function () {",
+					"        pm.response.to.have.status(404);",
+					"    });",
+					"    ",
+					"    pm.test('Error message is correct', function () {",
+					"        const jsonData = pm.response.json();",
+					"        pm.expect(jsonData.error).to.eql('Account not found');",
+					"    });",
+					"}",
+					"",
+					"if (pm.info.requestName === 'Transferência - Valor Negativo') {",
+					"    pm.test('Returns validation error', function () {",
+					"        pm.response.to.have.status(400);",
+					"    });",
+					"    ",
+					"    pm.test('Error message is correct', function () {",
+					"        const jsonData = pm.response.json();",
+					"        pm.expect(jsonData.error).to.eql('Validation failed');",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

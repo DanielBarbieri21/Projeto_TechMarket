@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechMarket - Extrato Bancário</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">TechMarket</h1>
+                <div class="user-info">
+                    <span class="user-name">João Silva</span>
+                    <span class="account-number">Conta: 12345-6</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="balance-section">
+                <div class="balance-card">
+                    <h2>Saldo Atual</h2>
+                    <div class="balance-amount" id="balanceAmount">
+                        <span class="loading">Carregando...</span>
+                    </div>
+                    <div class="balance-period" id="balancePeriod">
+                        Período: 01/01/2025 a 31/01/2025
+                    </div>
+                </div>
+            </section>
+
+            <section class="filters-section">
+                <div class="filters-card">
+                    <h3>Filtros</h3>
+                    <div class="filter-group">
+                        <label for="startDate">Data Inicial:</label>
+                        <input type="date" id="startDate" value="2025-01-01">
+                    </div>
+                    <div class="filter-group">
+                        <label for="endDate">Data Final:</label>
+                        <input type="date" id="endDate" value="2025-01-31">
+                    </div>
+                    <button class="btn btn-primary" id="applyFilters">Aplicar Filtros</button>
+                </div>
+            </section>
+
+            <section class="transactions-section">
+                <div class="transactions-header">
+                    <h3>Últimas Transações</h3>
+                    <div class="transaction-count" id="transactionCount">
+                        <span class="loading">Carregando...</span>
+                    </div>
+                </div>
+                
+                <div class="transactions-list" id="transactionsList">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Carregando transações...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 TechMarket. Todos os direitos reservados.</p>
+        </footer>
+    </div>
+
+    <script src="extrato.js"></script>
+</body>
+</html>

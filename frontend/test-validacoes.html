@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechMarket - Testes de Validação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .test-pass {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .test-fail {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .test-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .test-input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>TechMarket - Testes de Validação</h1>
+    
+    <div class="test-container">
+        <h2>Testes de CPF</h2>
+        <div id="cpf-tests"></div>
+        <button onclick="testarCPF()">Executar Testes de CPF</button>
+    </div>
+    
+    <div class="test-container">
+        <h2>Testes de Data de Nascimento</h2>
+        <div id="data-tests"></div>
+        <button onclick="testarData()">Executar Testes de Data</button>
+    </div>
+    
+    <div class="test-container">
+        <h2>Testes de Telefone</h2>
+        <div id="telefone-tests"></div>
+        <button onclick="testarTelefone()">Executar Testes de Telefone</button>
+    </div>
+    
+    <div class="test-container">
+        <h2>Testes de E-mail</h2>
+        <div id="email-tests"></div>
+        <button onclick="testarEmail()">Executar Testes de E-mail</button>
+    </div>
+    
+    <div class="test-container">
+        <h2>Testes de Nome</h2>
+        <div id="nome-tests"></div>
+        <button onclick="testarNome()">Executar Testes de Nome</button>
+    </div>
+    
+    <div class="test-container">
+        <h2>Teste Interativo</h2>
+        <p>Teste as validações em tempo real:</p>
+        <input type="text" id="test-cpf" class="test-input" placeholder="Digite um CPF">
+        <input type="date" id="test-data" class="test-input">
+        <input type="tel" id="test-telefone" class="test-input" placeholder="Digite um telefone">
+        <input type="email" id="test-email" class="test-input" placeholder="Digite um e-mail">
+        <input type="text" id="test-nome" class="test-input" placeholder="Digite um nome">
+        <button onclick="testarInterativo()">Testar Validações</button>
+        <div id="interactive-results"></div>
+    </div>
+    
+    <div class="test-container">
+        <h2>Executar Todos os Testes</h2>
+        <button onclick="executarTodosTestes()">Executar Todos os Testes</button>
+        <div id="all-tests-results"></div>
+    </div>
+
+    <script src="validacoes.js"></script>
+    <script>
+        function mostrarResultado(containerId, teste, resultado, mensagem = '') {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `test-result ${resultado ? 'test-pass' : 'test-fail'}`;
+            div.innerHTML = `${resultado ? '✓' : '✗'} ${teste}${mensagem ? ': ' + mensagem : ''}`;
+            container.appendChild(div);
+        }
+        
+        function limparResultados(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+        
+        function testarCPF() {
+            limparResultados('cpf-tests');
+            
+            const testes = [
+                { cpf: '11144477735', esperado: true, descricao: 'CPF válido' },
+                { cpf: '11111111111', esperado: false, descricao: 'CPF com dígitos iguais' },
+                { cpf: '12345678901', esperado: false, descricao: 'CPF inválido' },
+                { cpf: '111.444.777-35', esperado: true, descricao: 'CPF válido com formatação' },
+                { cpf: '123', esperado: false, descricao: 'CPF muito curto' },
+                { cpf: '', esperado: false, descricao: 'CPF vazio' }
+            ];
+            
+            testes.forEach(teste => {
+                const resultado = validarCPF(teste.cpf);
+                mostrarResultado('cpf-tests', teste.descricao, resultado === teste.esperado);
+            });
+        }
+        
+        function testarData() {
+            limparResultados('data-tests');
+            
+            const hoje = new Date();
+            const dataValida = new Date(1990, 0, 1);
+            const dataFutura = new Date(2030, 0, 1);
+            const dataMuitoAntiga = new Date(1900, 0, 1);
+            
+            const testes = [
+                { data: dataValida.toISOString().split('T')[0], esperado: true, descricao: 'Data válida (1990)' },
+                { data: dataFutura.toISOString().split('T')[0], esperado: false, descricao: 'Data futura' },
+                { data: dataMuitoAntiga.toISOString().split('T')[0], esperado: false, descricao: 'Data muito antiga' },
+                { data: '', esperado: false, descricao: 'Data vazia' },
+                { data: '2025-13-01', esperado: false, descricao: 'Data inválida' }
+            ];
+            
+            testes.forEach(teste => {
+                const resultado = validarDataNascimento(teste.data);
+                mostrarResultado('data-tests', teste.descricao, resultado.valido === teste.esperado, resultado.mensagem);
+            });
+        }
+        
+        function testarTelefone() {
+            limparResultados('telefone-tests');
+            
+            const testes = [
+                { telefone: '11999999999', esperado: true, descricao: 'Celular válido' },
+                { telefone: '1133334444', esperado: true, descricao: 'Telefone fixo válido' },
+                { telefone: '1111111111', esperado: false, descricao: 'Telefone fixo inválido (começa com 9)' },
+                { telefone: '1199999999', esperado: false, descricao: 'Celular inválido (não começa com 9)' },
+                { telefone: '123', esperado: false, descricao: 'Telefone muito curto' },
+                { telefone: '119999999999', esperado: false, descricao: 'Telefone muito longo' },
+                { telefone: '', esperado: false, descricao: 'Telefone vazio' }
+            ];
+            
+            testes.forEach(teste => {
+                const resultado = validarTelefone(teste.telefone);
+                mostrarResultado('telefone-tests', teste.descricao, resultado === teste.esperado);
+            });
+        }
+        
+        function testarEmail() {
+            limparResultados('email-tests');
+            
+            const testes = [
+                { email: 'teste@email.com', esperado: true, descricao: 'E-mail válido' },
+                { email: 'usuario@dominio.com.br', esperado: true, descricao: 'E-mail válido com .br' },
+                { email: 'teste@', esperado: false, descricao: 'E-mail sem domínio' },
+                { email: '@email.com', esperado: false, descricao: 'E-mail sem usuário' },
+                { email: 'teste.email.com', esperado: false, descricao: 'E-mail sem @' },
+                { email: '', esperado: false, descricao: 'E-mail vazio' }
+            ];
+            
+            testes.forEach(teste => {
+                const resultado = validarEmail(teste.email);
+                mostrarResultado('email-tests', teste.descricao, resultado === teste.esperado);
+            });
+        }
+        
+        function testarNome() {
+            limparResultados('nome-tests');
+            
+            const testes = [
+                { nome: 'João Silva', esperado: true, descricao: 'Nome válido' },
+                { nome: 'Maria José da Silva', esperado: true, descricao: 'Nome completo válido' },
+                { nome: 'João', esperado: false, descricao: 'Nome sem sobrenome' },
+                { nome: '', esperado: false, descricao: 'Nome vazio' },
+                { nome: 'João123', esperado: false, descricao: 'Nome com números' },
+                { nome: 'A', esperado: false, descricao: 'Nome muito curto' }
+            ];
+            
+            testes.forEach(teste => {
+                const resultado = validarNome(teste.nome);
+                mostrarResultado('nome-tests', teste.descricao, resultado.valido === teste.esperado, resultado.mensagem);
+            });
+        }
+        
+        function testarInterativo() {
+            const container = document.getElementById('interactive-results');
+            container.innerHTML = '';
+            
+            const cpf = document.getElementById('test-cpf').value;
+            const data = document.getElementById('test-data').value;
+            const telefone = document.getElementById('test-telefone').value;
+            const email = document.getElementById('test-email').value;
+            const nome = document.getElementById('test-nome').value;
+            
+            if (cpf) {
+                const resultado = validarCPF(cpf);
+                mostrarResultado('interactive-results', 'CPF', resultado, resultado ? 'Válido' : 'Inválido');
+            }
+            
+            if (data) {
+                const resultado = validarDataNascimento(data);
+                mostrarResultado('interactive-results', 'Data', resultado.valido, resultado.mensagem || 'Válida');
+            }
+            
+            if (telefone) {
+                const resultado = validarTelefone(telefone);
+                mostrarResultado('interactive-results', 'Telefone', resultado, resultado ? 'Válido' : 'Inválido');
+            }
+            
+            if (email) {
+                const resultado = validarEmail(email);
+                mostrarResultado('interactive-results', 'E-mail', resultado, resultado ? 'Válido' : 'Inválido');
+            }
+            
+            if (nome) {
+                const resultado = validarNome(nome);
+                mostrarResultado('interactive-results', 'Nome', resultado.valido, resultado.mensagem || 'Válido');
+            }
+        }
+        
+        function executarTodosTestes() {
+            limparResultados('all-tests-results');
+            
+            const div = document.createElement('div');
+            div.className = 'test-result test-info';
+            div.innerHTML = 'Executando todos os testes...';
+            document.getElementById('all-tests-results').appendChild(div);
+            
+            setTimeout(() => {
+                limparResultados('all-tests-results');
+                
+                testarCPF();
+                testarData();
+                testarTelefone();
+                testarEmail();
+                testarNome();
+                
+                const div = document.createElement('div');
+                div.className = 'test-result test-info';
+                div.innerHTML = 'Todos os testes foram executados! Verifique os resultados acima.';
+                document.getElementById('all-tests-results').appendChild(div);
+            }, 1000);
+        }
+        
+        // Executar testes automaticamente ao carregar a página
+        window.addEventListener('load', function() {
+            const div = document.createElement('div');
+            div.className = 'test-result test-info';
+            div.innerHTML = 'Página carregada. Clique nos botões para executar os testes.';
+            document.getElementById('all-tests-results').appendChild(div);
+        });
+    </script>
+</body>
+</html>
