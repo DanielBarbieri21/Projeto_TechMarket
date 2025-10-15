@@ -5,7 +5,6 @@ import com.techmarket.dto.TransferResponse;
 import com.techmarket.entity.Account;
 import com.techmarket.entity.Transfer;
 import com.techmarket.exception.AccountNotFoundException;
-import com.techmarket.exception.DuplicateIdempotencyKeyException;
 import com.techmarket.exception.InsufficientBalanceException;
 import com.techmarket.repository.AccountRepository;
 import com.techmarket.repository.TransferRepository;
