@@ -26,6 +26,9 @@ RUN chown -R appuser:appgroup /usr/share/nginx/html && \
 RUN mkdir -p /var/run/nginx && \
     chown -R appuser:appgroup /var/run/nginx
 
+# Atualizar nginx.conf para usar o usuário correto
+RUN sed -i 's/user nginx;/user appuser;/' /etc/nginx/nginx.conf
+
 # Mudar para usuário não-root
 USER appuser
 
